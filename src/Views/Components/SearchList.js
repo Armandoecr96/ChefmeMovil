@@ -10,7 +10,9 @@ export default class Dashboard extends Component {
       ingredient: '',
       quantity: 0,
       ingredientList: [],
-      selected: ''
+      finalList: [],
+      selected: '',
+      searchButton: true,
     }
   }
 
@@ -33,6 +35,9 @@ export default class Dashboard extends Component {
         this.inputIng._root.clear();
         this.inputCant._root.clear();
         this.state.ingredientList.push(newIngredient)
+        if(this.state.ingredientList.length >= 2){
+          this.setState({searchButton: false})
+        }
       }
     }
   }
@@ -50,14 +55,19 @@ export default class Dashboard extends Component {
   }
 
   search = () => {
-    this.props.navigation.navigate('ResultList')
+    this.state.ingredientList.forEach(element => {
+      var data = element.ingredient + "%" + element.quantity + element.selected;
+      this.setState({ finalList: data});
+    });
+
+    this.props.navigation.navigate('ResultList', {finalList: this.state.finalList})
   }
 
   render () {
     return (
       <Container>
-        <Content searchBar rounded>
-          <Item style={{marginLeft: 16, marginRight: 4}}>
+        <Content searchBar rounded >
+          <Item style={{marginLeft: 16, marginRight: 4, marginTop: 16}}>
             <Icon name='ios-search' />
             <Input ref={(ref) => { this.inputIng = ref }} placeholder='Ingrediente' onChangeText={(ingredient) => this.setState({ingredient: ingredient})} />
             <Input  ref={(ref) => { this.inputCant = ref }} placeholder='Cantidad' keyboardType='numeric' onChangeText={(quantity) => this.setState({quantity: quantity})} />
@@ -91,7 +101,8 @@ export default class Dashboard extends Component {
             }
             </List>
             </ScrollView>
-            <Button style={styles.buttom} onPress={this.search}>
+            <Text style={{justifyContent: "center", marginLeft: '15%', marginRight: '15%', fontSize: 20, fontWeight: 'bold'}}>Ingresa los ingredientes que tengas ahora en tu refrigerador (Minimo 2 ingredientes)</Text>
+            <Button style={styles.buttom} disabled={this.state.searchButton} onPress={this.search}>
             <Text >Search</Text>
           </Button>
         </Content>

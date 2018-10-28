@@ -24,6 +24,9 @@ export default createStackNavigator({
     }
   },
   RecetDetails: {
-    screen: RecetDetails
+    screen: RecetDetails,
+    navigationOptions: {
+      title: 'Details'
+    }
   }
 })
