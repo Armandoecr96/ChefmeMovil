@@ -6,9 +6,9 @@ import axios from 'axios'
 export default class ResultList extends Component {
   constructor(props){
     super(props)
-    this.props = {
+    /*this.props = {
       finalList
-    }
+    }*/
   }
 
   componentDidMount = () => {
